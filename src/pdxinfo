@@ -1,0 +1,7 @@
+name=Hello World in C
+author=emhaechi
+description=An extended "Hello World" project for the Playdate game system that exclusively uses the Playdate SDK's C API to demo basic handling of hardware inputs and loading assets like images, sounds, and fonts.
+bundleId=media.emhaechi.pd.helloWorldC
+version=1.0
+buildNumber=1
+imagePath=assets/pd_launcher
