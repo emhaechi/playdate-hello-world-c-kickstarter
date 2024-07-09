@@ -1,0 +1,9 @@
+
+# build artifacts:
+/build/
+/Source/
+/*.pdx/
+/*.pdx.zip
+
+# unsorted:
+/_local_only/
