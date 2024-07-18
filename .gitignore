@@ -3,6 +3,7 @@
 /build/
 /Source/
 /*.pdx/
+/dist/*.pdx.zip
 /*.pdx.zip
 
 # unsorted:

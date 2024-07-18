@@ -13,8 +13,10 @@ REM - Execute this script from the project's root directory, referred to as
 REM   "~PROJECT_ROOT". The following will happen:
 REM   - CMake build artifacts are generated into "~PROJECT_ROOT/build",
 REM   - Playdate's CMake scripts will generate the distributable as the
-REM     "~PROJECT_ROOT/<PROJECT_NAME>.pdx" directory, and create the 
+REM     "~PROJECT_ROOT/<PLAYDATE_GAME_NAME>.pdx" directory, and create the 
 REM     intermediary "~PROJECT_ROOT/Source" directory.
+REM   - A zip archive of the Playdate distributable directory is 
+REM     generated into "~PROJECT_ROOT/dist" (if command exists).
 REM
 REM - Developed against Playdate SDK v2.5.0.
 
@@ -32,6 +34,7 @@ REM - argv[0] == Release || Debug
 set PD_BUILD_TYPE=%1
 if "%PD_BUILD_TYPE"=="" (set PD_BUILD_TYPE=Release)
 
+where.exe /q tar && (set CREATE_ZIP=true) || (set CREATE_ZIP=false)
 
 if "%PD_MAKE_PATH%"=="" (echo -- PD_MAKE_PATH Path not found; set ENV value PD_MAKE_PATH to make.exe or edit script && exit /b 1)
 if "%PD_CMAKE_C_COMPILER%"=="" (echo -- PD_CMAKE_C_COMPILER Path not found; set ENV value PD_CMAKE_C_COMPILER to C compiler exe or edit script && exit /b 1)
@@ -39,7 +42,7 @@ if "%PD_CMAKE_TOOLCHAIN_FILE%"=="" (echo -- PD_CMAKE_TOOLCHAIN_FILE Path not fou
 
 
 REM - clean any previous build artifacts to ensure build always has latest:
-for /d %%d in ("build" "Source" "*.pdx") do (
+for /d %%d in ("build" "Source" "*.pdx" "dist") do (
   (rmdir /s /q "%%~d" && echo -- goodbye, %%~d) || echo -- did not find to remove: %%~d
 )
 
@@ -49,10 +52,21 @@ for /l %%i in (1, 1, 2) do (
 	("%PD_MAKE_PATH%" -C "./build" && echo -- BUILD COMPLETED)
 )
 
+REM - generate zip archive of the Playdate distributable directory:
+if "%CREATE_ZIP%"=="true" (
+	for /d %%d in ("*.pdx") do (
+		(mkdir "dist" && tar -a -cf "dist/%%~d.zip" %%~d && echo -- generated zip archive into dist/) || (echo -- failed generating zip archive into dist/)
+	)
+) else (
+	echo -- zip command not found, zip archive will not be generated!
+)
+
+
 REM - if truly successful build:
 REM - "~PROJECT_ROOT/Source" directory should contain pdex.dll, pdex.elf, and the rest of the project
-REM - "~PROJECT_ROOT/<PROJECT_NAME>.pdx" directory should contain pdex.bin, pdex.dll, and the rest of the project
+REM - "~PROJECT_ROOT/<PLAYDATE_GAME_NAME>.pdx" directory should contain pdex.bin, pdex.dll, and the rest of the project
 for /f %%f in ("Source/pdex.dll" "Source/pdex.elf" "*.pdx/pdex.bin" "*.pdx/pdex.dll") do (
   if not exist "%%~f" echo -- BUILD FAILURE && exit /b 1
 )
+
 echo -- BUILD SUCCESS

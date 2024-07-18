@@ -27,5 +27,4 @@ file(COPY ${CMAKE_CURRENT_LIST_DIR}/src/pdxinfo DESTINATION ../Source)
 # assets/
 if(NOT PD_ASSETS_MISSING)
 	file(COPY ${CMAKE_CURRENT_LIST_DIR}/src/assets DESTINATION ../Source)
-	file(COPY ${CMAKE_CURRENT_LIST_DIR}/src/assets DESTINATION ../${PLAYDATE_GAME_NAME}.pdx)
 endif()
