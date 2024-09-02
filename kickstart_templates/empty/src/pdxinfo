@@ -1,0 +1,7 @@
+name={}{{__KICKSTART_PUBLIC_NAME__}}{}
+author={}{{__KICKSTART_AUTHOR__}}{}
+description={}{{__KICKSTART_DESC__}}{}
+bundleId={}{{__KICKSTART_BUNDLE_ID__}}{}
+version=1.0
+buildNumber=1
+imagePath=assets/pd_launcher
