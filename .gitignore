@@ -6,5 +6,8 @@
 /dist/*.pdx.zip
 /*.pdx.zip
 
+# kickstart artifacts:
+/projects/
+
 # unsorted:
 /_local_only/

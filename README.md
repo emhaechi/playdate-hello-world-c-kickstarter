@@ -12,6 +12,10 @@ This is what it looks like running in the Playdate Simulator when operating the 
 
 ![Preview of Hello World in C running in the Playdate Simulator: still frames of the Earth revolving slowly are displayed on an emulated Playdate screen](assets/hello-world-c-playdate-sim-preview.gif)
 
+There are also scripts to generate new projects from project templates that have been created. For example, this is what a project generated from the `demo_inputs` template looks like when running on a Playdate device:
+
+![Preview of a project generated from the demo_inputs template running on a Playdate device: a screenshot showing a real-time controller map of all Playdate inputs](assets/template-demo_inputs-hw-ss-preview.gif)
+
 
 # Project Structure
 
@@ -20,7 +24,8 @@ This is what it looks like running in the Playdate Simulator when operating the 
 - `/src/assets/` - contains the project's game assets like images.
 - `/src/pdxinfo` - the project's Playdate game metadata file.
 - `/include/` - contains the project's C header files. (Configured to be so in `/CMakeLists.txt`).
-- `/scripts/` - contains convenient script files to compile things and produce distributables. Generally, these should be executed from project root and will perform out-of-source CMake builds.
+- `/scripts/` - contains convenient script files to create/generate/kickstart new projects, compile things and produce distributables. Generally, these should be executed from project root and will perform out-of-source CMake builds.
+- `/kickstart_templates/` - contains project templates from which a new project can be generated.
 - `/CMakeLists.txt` - CMake build script that does the heavy lifting during build. Edit when adding new C source/header files.
 - `/copy-assets-playdate.cmake` - this project's CMake build script that copies game metadata and any game assets from `/src/` to build directories.
 
@@ -29,7 +34,7 @@ This is what it looks like running in the Playdate Simulator when operating the 
 
 This project relies on Playdate SDK's CMake build scripts but also provides script files in `scripts/` to simplify producing distributable game builds.
 
-A Playdate game build is the generated directory having a name like `/<PLAYDATE_GAME_NAME>.pdx`. This project's build scripts will generate a zip archive of it into "dist/" ready for distribution.
+A Playdate game build is the generated directory having a name like `/<PLAYDATE_GAME_NAME>.pdx`. This project's build scripts will generate a zip archive of it into `dist/` ready for distribution.
 
 Here's what you need to do before building Playdate games/projects on Windows:
 
@@ -58,8 +63,29 @@ After a successful build, you have a few options to install and test/play it:
 
 - Open the generated Playdate distributable directory with the Playdate Simulator.
 - Upload it to a USB-connected Playdate system with the Playdate Simulator after opening the distributable directory.
-- Sideload it onto a Playdate system manually by inserting the distributable directory into the system's "Games" directory.
+- Sideload it onto a Playdate system manually by inserting the distributable directory into the system's `Games` directory.
 - Sideload it through Playdate's online "Sideload a Game" web interface by uploading the zip archive of the distributable directory.
+
+
+# Kickstarting
+
+Project templates in `kickstart_templates`, where each directory represents a template, can be used to create/generate/kickstart a new project. Each template contains the source files and assets, scripts, documentation, and anything else that should be copied into a new generated project from it. Generated projects are inserted into the `projects` directory, and are otherwise independent projects that can be moved around as you like.
+
+Execute the kickstart script with the root of this project as `CWD` to generate a new project. For example, to execute the script file in PowerShell:
+
+```batch
+./scripts/kickstart_win.cmd
+```
+
+The terminal will prompt for metadata values and other things such as game/project name, `PLAYDATE_GAME_NAME` (i.e. build name), etc., according to the template being used. These will be dynamically inserted into the template's files where placeholders for them are found.
+
+Generally only plaintext files such as Playdate's `pdxinfo` metadata file and source files will be processed for placeholder replacement. Placeholders in files are marked with the following syntax:
+
+```
+{}{{__KICKSTART_TEMPLATE_VAR_EXAMPLE_NAME__}}{}
+```
+
+A successfully kickstarted project can be found in the `projects/PLAYDATE_GAME_NAME` directory.
 
 
 # License
