@@ -106,7 +106,6 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg) {
 		pd->graphics->setFont(font);
 		fontTracking = pd->graphics->getTextTracking();
 		textHeight = pd->graphics->getFontHeight(font);
-		// textWidth = pd->graphics->getTextWidth(font, helloText, strlen(helloText), kASCIIEncoding, fontTracking);
 		
 		// init system menu
 		darkModeMenuItemCheckmark = pd->system->addCheckmarkMenuItem(getDarkModeMenuItemLabel(), darkMode, systemMenuItemDarkModeCallback, NULL);
